@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import drizzleOptions from './drizzleOptions';
+import { Drizzle, generateStore } from '@drizzle/store';
+import { DrizzleContext } from '@drizzle/react-plugin';
+
+const drizzleStore = generateStore(drizzleOptions);
+const drizzle = new Drizzle(drizzleOptions, drizzleStore);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<DrizzleContext.Provider drizzle={drizzle}>
+			<DrizzleContext.Consumer>
+				{(drizzleContext) => {
+					const { drizzle, drizzleState, initialized } = drizzleContext;
+
+					if (!initialized) {
+						return 'Loading...';
+					}
+					return <h1>Hello world</h1>;
+				}}
+			</DrizzleContext.Consumer>
+		</DrizzleContext.Provider>
+	);
 }
 
 export default App;
